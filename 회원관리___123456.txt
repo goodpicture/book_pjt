@@ -1,0 +1,20 @@
+-- <<회원 검색>>
+-- 1. ((회원정보)) 성명으로 <<회원>>테이블 검색 [회원코드], [전화번호], [우편번호], [주소] 가져오기
+select m_code, tel, zip_code, address from book_project.member_info; 
+2. ((대여정보)) [도서코드],[도서명],[대여일자],[반납일자],[연체여부(대여후 3일이후 부터) ]
+select b.b_code, b_name, lend_date, return_date, if(DATEDIFF(CURRENT_TIMESTAMP(),lend_date) >= 3,'Y','N');
+
+2-2. 연체여부
+ 2-2-1. 반납된 도서의 경우
+DATEDIFF(return_date,lend_date) >= 3
+ 2-2-2. 미반납된 도서의 경우
+DATEDIFF(CURRENT_TIMESTAMP(),lend_date) >= 3 
+
+3. 총 연체권수
+select count(*) from 
+
+4. 대여중인 권수
+	select count(*)  from payment_io where m_code = ? and return_date is null;
+
+5. 연체권수+대여중권수+반납한 권수
+  select count(*) from payment_io where m_code = ?;
