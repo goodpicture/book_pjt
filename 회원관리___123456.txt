@@ -1,20 +1,42 @@
--- <<ȸ�� �˻�>>
--- 1. ((ȸ������)) �������� <<ȸ��>>���̺� �˻� [ȸ���ڵ�], [��ȭ��ȣ], [������ȣ], [�ּ�] ��������
-select m_code, tel, zip_code, address from book_project.member_info; 
-2. ((�뿩����)) [�����ڵ�],[������],[�뿩����],[�ݳ�����],[��ü����(�뿩�� 3������ ����) ]
-select b.b_code, b_name, lend_date, return_date, if(DATEDIFF(CURRENT_TIMESTAMP(),lend_date) >= 3,'Y','N');
+-- <<회원 검색>>
+-- 1. [[성명]]으로 <<회원>>테이블 검색 [성명], [회원코드], [전화번호], [우편번호], [주소], <<회원대여정보>>에서 [블랙리스트종료 날짜] 가져오기
+select m.m_name, .m_code, tel, zip_code, address, black_date from book_project.member_info m
+inner join m_lend_info  ml on m.m_code = ml.m_code where m.m_name like '%보영%';
+-- 1-1. 이름으로 검색한 데이터가 중복인지 확인
+select count(*) from member_info where m_name like '%보영%'; -- 1이 아니면 중복이 데이터가 존재하는 것
+-- 1-2. 중복 발생시 해당 데이터 띄우고 선택하면 해당 [[회원코드]] 로 재 검색
+select m.m_name, m.m_code, tel, zip_code, address, black_date from book_project.member_info m
+inner join m_lend_info  ml on m.m_code = ml.m_code where m.m_code = 'M003';
 
-2-2. ��ü����
- 2-2-1. �ݳ��� ������ ���
-DATEDIFF(return_date,lend_date) >= 3
- 2-2-2. �̹ݳ��� ������ ���
-DATEDIFF(CURRENT_TIMESTAMP(),lend_date) >= 3 
+-- 2. [[전화번호]]로 검색
+select m.m_name, m.m_code, tel, zip_code, address, black_date from book_project.member_info m
+inner join m_lend_info  ml on m.m_code = ml.m_code where m.tel like '%1234%';
+-- 2-1. 이름으로 검색한 데이터가 중복인지 확인
+select count(*) from member_info where m.tel like '%1234%'; -- 1이 아니면 중복이 데이터가 존재하는 것
+-- 1-2. 중복 발생시 해당 데이터 띄우고 선택하면 해당 [[회원코드]] 로 재 검색
+select m.m_name, m.m_code, tel, zip_code, address, black_date from book_project.member_info m
+inner join m_lend_info  ml on m.m_code = ml.m_code where m.m_code = 'M003';
 
-3. �� ��ü�Ǽ�
-select count(*) from 
+-- 3. [[회원코드]] 로 검색
+select m.m_name, m.m_code, tel, zip_code, address, black_date from book_project.member_info m
+inner join m_lend_info  ml on m.m_code = ml.m_code where m.m_code = 'M003';
 
-4. �뿩���� �Ǽ�
-	select count(*)  from payment_io where m_code = ? and return_date is null;
 
-5. ��ü�Ǽ�+�뿩�߱Ǽ�+�ݳ��� �Ǽ�
-  select count(*) from payment_io where m_code = ?;
+-- 4. ((대여정보)) [도서코드],[도서명],[대여일자],[반납일자],[연체여부(대여후 3일이후 부터: 10일 대여시 12일이 마감. 13일이 연체시작)]
+-- 4-1. 미반납도서 (현재 날짜를 기준으로 계산)
+select b.b_code, b_name, lend_date, return_date, if(DATEDIFF(CURRENT_DATE,lend_date)>2,'Y','N') is_delay from payment_io p
+inner join book_info b on b.b_code = p.b_code where p.return_date is null;
+-- 4-2. 반납도서 (return_date)를 기준으로 
+select b.b_code, b_name, lend_date, return_date, if(DATEDIFF(return_date,lend_date) > 2,'Y','N') is_delay from payment_io p
+inner join book_info b on b.b_code = p.b_code where p.return_date is not null;
+
+-- 5. 총계 출력
+-- 5-1. 연체권수 
+-- 5-1-1. 미반납 연체권수
+	select count(*) from payment_io where m_code = 'M004' and return_date is null and (DATEDIFF(CURRENT_DATE,lend_date) >= 3);
+-- 5-1-2. 반납한 연체권수
+	select count(*) from payment_io where m_code = 'M009' and return_date is not null and (DATEDIFF(return_date,lend_date) >= 3);
+-- 5-2. 대여중인 권수
+	select count(*) from payment_io where m_code = 'M004' and return_date is null;
+-- 5-3. 총 권수  : 연체권수+대여중권수+반납한 권수
+ 	select count(*) from payment_io where m_code = 'M004';
