@@ -1,0 +1,42 @@
+1. book프로그램을 띄우면 도서관리테이블(book_info)를 출력
+
+select b_code, b_name, author, p_code, price from book_info;
+
+2. 출판사테이블(publisher_info)에 모든 항목 입력 저장 (출판사명, 담당자명, 연락처)
+
+insert into publisher_info(p_code, publisher, p_name, p_tel) values
+(?,?,?,?);
+
+2. 추가된 도서를 book_info테이블에 입력하고 저장 (도서코드, 도서명, 저자, 출판사명, 가격)  
+
+①. 도서코드는 중복불가 
+
+insert into book_info(b_code, b_name, author, publisher, price)values
+(?,?,?,?,?);
+
+②. 저장 시 도서대여정보테이블(b_lend_info)에 도서대여가능여부 true(1), 총대여횟수는 0으로 초기화 설정
+
+3. 프로그램 도서목록에서 마우스오른쪽버튼으로 수정메뉴 클릭하여 업데이트
+
+update book_info 
+set b_name=?, author=?, price=?
+where b_code = ?; 
+
+4. 프로그램 도서목록에서 마우스오른쪽버튼으로 삭제메뉴를 클릭하여 삭제
+
+delete from book_info where b_code = ?;
+
+------------------------------------------
+
+1. 회원관리 불러오면 회원테이블(member_info) 출력
+
+select p_code, publisher, p_name, p_tel  from publisher_info;
+
+2. 회원테이블(member_info)에 모든 항목 입력 저장 (회원코드, 성명, 연락처, 주소, 탈퇴여부)
+
+①. 회원코드는 중복불가
+
+insert into member_info(m_code, m_name, tel, zip_code, address, is_secsn) values
+(?,?,?,?,?,?);
+
+②. 저장 시 회원대여정보테이블(m_lend_info)에 총대여권수(m_lend_count)는 0으로 초기화
