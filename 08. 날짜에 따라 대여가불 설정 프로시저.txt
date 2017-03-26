@@ -1,5 +1,5 @@
--- È¸¿ø´ë¿©Á¤º¸ ¹Ù²ãÁÖ´Â ÇÁ·Î½ÃÀú
--- ÀüÃ¼ ¹Ù²Ù±â
+-- íšŒì›ëŒ€ì—¬ì •ë³´ ë°”ê¿”ì£¼ëŠ” í”„ë¡œì‹œì €
+-- ì „ì²´ ë°”ê¾¸ê¸°
 delimiter $$
 create procedure book_project.proc_memberLend_is_posbl_update()
 begin 
@@ -8,11 +8,13 @@ begin
 	declare continue handler for sqlexception set err = -1;
 	
 	start transaction;
-	
+
+	-- ì—°ì²´ì ëŒ€ì—¬ë¶ˆê°€ì„¤ì •	
 	update book_project.memberlend set is_posbl = false 
 	where m_code in (select m_code from book_project.paymentio where return_date is null and DATE_ADD(lend_date, interval 2 day) < current_date);
 	
-	update book_project.memberlend set is_posbl = true, black_date = null
+	-- ë‚ ì§œ ê²½ê³¼ì‹œ ë¸”ë™ë¦¬ìŠ¤íŠ¸ í•´ì œ
+	update book_project.memberlend set is_posbl = true, black_date = null, delay_count = 0
 	where m_code in (select * from (select m_code from book_project.memberlend where black_date < current_date) ml);
 	
 	if err < 0 then
@@ -24,7 +26,7 @@ begin
 end $$
 delimiter ;
 
--- ÁöÁ¤ÇÑ È¸¿ø¸¸ ¹Ù²Ù±â
+-- ì§€ì •í•œ íšŒì›ë§Œ ë°”ê¾¸ê¸°
 delimiter $$
 create procedure book_project.proc_memberLend_is_posbl_update2(
 	in _m_code char(4)
@@ -36,17 +38,18 @@ begin
 	
 	start transaction;
 	
-	-- ¿¬Ã¼¹ß»ı½Ã ´ë¿©ºÒ°¡¼³Á¤
+	-- ì—°ì²´ë°œìƒì‹œ ëŒ€ì—¬ë¶ˆê°€ì„¤ì •
 	select datediff(current_date, DATE_ADD(lend_date, interval 2 day)) into datecnt from book_project.paymentio 
 	where return_date is null and m_code = _m_code;
 	if datecnt > 0 then 
 	 	update book_project.memberlend set is_posbl = false where m_code = _m_code;
 	end if;
 	
+	-- ë‚ ì§œê²½ê³¼ì‹œ ë¸”ë™ë¦¬ìŠ¤íŠ¸ í•´ì œ
 	select black_date into @_black from book_project.memberlend where m_code = _m_code;
 	if @_black is not null then
 		if @_black < current_date then
-			update book_project.memberlend set is_posbl = true, black_date = null where m_code = _m_code;
+			update book_project.memberlend set is_posbl = true, black_date = null, delay_count = 0 where m_code = _m_code;
 		end if;
 	end if;
 	
