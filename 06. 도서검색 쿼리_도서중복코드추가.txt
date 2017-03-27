@@ -1,71 +1,71 @@
-[µµ¼­°Ë»ö]
+[ë„ì„œê²€ìƒ‰]
 
--- 1.µµ¼­¸íÀ¸·Î °Ë»ö : µµ¼­ÄÚµå, µµ¼­Áßº¹ÄÚµå, µµ¼­¸í, ÃâÆÇ»ç, ÀúÀÚ, °¡°İ (µµ¼­Á¤º¸) Ãâ·Â
+-- 1.ë„ì„œëª…ìœ¼ë¡œ ê²€ìƒ‰ : ë„ì„œì½”ë“œ, ë„ì„œì¤‘ë³µì½”ë“œ, ë„ì„œëª…, ì¶œíŒì‚¬, ì €ì, ê°€ê²© (ë„ì„œì •ë³´) ì¶œë ¥
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b 
-left join book_project.publisherInfo p
-on b.p_code = p.p_code where b_name like '%ÀÚ¹Ù%'
+left join publisherInfo p
+on b.p_code = p.p_code where b_name like '%ìë°”%'
 
--- 2. µµ¼­¸íÀ¸·Î °Ë»ö ½Ã, Ã¥ÀÇ ÀÌ¸§ÀÌ Áßº¹ µÉ °æ¿ì
--- 2-1. Áßº¹È®ÀÎÇÏ±â : µ¿ÀÏÇÑ Ã¥ÀÇ ÀÌ¸§ÀÌ ÀÖ´ÂÁö, ¸î ±ÇÀÎÁö È®ÀÎ
-select count(*) from bookInfo where b_name like '%·±´ø%'
+-- 2. ë„ì„œëª…ìœ¼ë¡œ ê²€ìƒ‰ ì‹œ, ì±…ì˜ ì´ë¦„ì´ ì¤‘ë³µ ë  ê²½ìš°
+-- 2-1. ì¤‘ë³µí™•ì¸í•˜ê¸° : ë™ì¼í•œ ì±…ì˜ ì´ë¦„ì´ ìˆëŠ”ì§€, ëª‡ ê¶Œì¸ì§€ í™•ì¸
+select count(*) from bookInfo where b_name like '%ëŸ°ë˜%'
 
--- 2-2. µ¿ÀÏÇÑ Ã¥ ÀÌ¸§ÀÌ Áßº¹µÇ¾î ³ª¿À¸é, »õÃ¢¿¡¼­ Å¬¸¯½Ã, µµ¼­ ÄÚµå·Î Àç °Ë»ö  ** ÃÖÁ¾ÀûÀ¸·Î Áßº¹ÄÚµåµµ ÁöÁ¤ÇØ¼­ ÇÑ±Ç¸¸ ¼±ÅÃÇÏ±â 
+-- 2-2. ë™ì¼í•œ ì±… ì´ë¦„ì´ ì¤‘ë³µë˜ì–´ ë‚˜ì˜¤ë©´, ìƒˆì°½ì—ì„œ í´ë¦­ì‹œ, ë„ì„œ ì½”ë“œë¡œ ì¬ ê²€ìƒ‰  ** ìµœì¢…ì ìœ¼ë¡œ ì¤‘ë³µì½”ë“œë„ ì§€ì •í•´ì„œ í•œê¶Œë§Œ ì„ íƒí•˜ê¸° 
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b left join publisherInfo p
 on b.p_code = p.p_code where b_code = ? and b_sub_code= ?;
 
 
--- 3. µµ¼­ÄÚµå·Î °Ë»ö : µµ¼­ÄÚµå, µµ¼­¸í, ÃâÆÇ»ç, ÀúÀÚ, °¡°İ (µµ¼­Á¤º¸) Ãâ·Â
+-- 3. ë„ì„œì½”ë“œë¡œ ê²€ìƒ‰ : ë„ì„œì½”ë“œ, ë„ì„œëª…, ì¶œíŒì‚¬, ì €ì, ê°€ê²© (ë„ì„œì •ë³´) ì¶œë ¥
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b left join publisherInfo p
 on b.p_code = p.p_code where b_code = ?;
 
--- 3-1. ** ÃÖÁ¾ÀûÀ¸·Î Áßº¹ÄÚµåµµ ÁöÁ¤ÇØ¼­ ÇÑ±Ç¸¸ ¼±ÅÃÇÏ±â 
+-- 3-1. ** ìµœì¢…ì ìœ¼ë¡œ ì¤‘ë³µì½”ë“œë„ ì§€ì •í•´ì„œ í•œê¶Œë§Œ ì„ íƒí•˜ê¸° 
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b left join publisherInfo p
 on b.p_code = p.p_code where b_code = ? and b_sub_code= ?;
 
 
 
--- 4. ÃâÆÇ»ç¸íÀ¸·Î µµ¼­ °Ë»ö
+-- 4. ì¶œíŒì‚¬ëª…ìœ¼ë¡œ ë„ì„œ ê²€ìƒ‰
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b left join publisherInfo p
-on b.p_code = p.p_code where publisher like '%ÇÑºû%';
+on b.p_code = p.p_code where publisher like '%í•œë¹›%';
 
--- 4-1. µ¿ÀÏÇÑ ÃâÆÇ»ç¸íÀÌ ÀÖÀ» °æ¿ì, Áßº¹È®ÀÎ
-select count(*) from publisherInfo where publisher like '%ÇÑºû%';
+-- 4-1. ë™ì¼í•œ ì¶œíŒì‚¬ëª…ì´ ìˆì„ ê²½ìš°, ì¤‘ë³µí™•ì¸
+select count(*) from publisherInfo where publisher like '%í•œë¹›%';
 
--- 4-2. Áßº¹È®ÀÎ µÇ¾î »õÃ¢¿¡¼­ Å¬¸¯½Ã, µµ¼­ÄÚµå·Î Àç °Ë»ö ÃÖÁ¾ 1±Ç ¼±ÅÃ
+-- 4-2. ì¤‘ë³µí™•ì¸ ë˜ì–´ ìƒˆì°½ì—ì„œ í´ë¦­ì‹œ, ë„ì„œì½”ë“œë¡œ ì¬ ê²€ìƒ‰ ìµœì¢… 1ê¶Œ ì„ íƒ
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b left join publisherInfo p
 on b.p_code = p.p_code where b_code = ? and b_sub_code= ?;
 
 
 
--- 5. µµ¼­ÄÚµå °Ë»ö ¼º°ø ½Ã, [È¸¿øÄÚµå ¼º¸í ´ë¿©ÀÏ ¹İ³³ÀÏ ¿¬Ã¼¿©ºÎ] Ãâ·Â
+-- 5. ë„ì„œì½”ë“œ ê²€ìƒ‰ ì„±ê³µ ì‹œ, [íšŒì›ì½”ë“œ ì„±ëª… ëŒ€ì—¬ì¼ ë°˜ë‚©ì¼ ì—°ì²´ì—¬ë¶€] ì¶œë ¥
 select p.m_code, m.m_name, lend_date, return_date, if(datediff(current_date, lend_date)>2, 'Y', 'N')
 from memberInfo m join paymentIO p on m.m_code=p.m_code where b_code = ? and b_sub_code = ?;
 
 
-6. µµ¼­¸í °Ë»ö ¼º°ø ½Ã, [È¸¿øÄÚµå ¼º¸í ´ë¿©ÀÏ ¹İ³³ÀÏ ¿¬Ã¼¿©ºÎ] Ãâ·Â
+6. ë„ì„œëª… ê²€ìƒ‰ ì„±ê³µ ì‹œ, [íšŒì›ì½”ë“œ ì„±ëª… ëŒ€ì—¬ì¼ ë°˜ë‚©ì¼ ì—°ì²´ì—¬ë¶€] ì¶œë ¥
 
--- > °Ë»öÃ¢ ¸ÕÀú ¶ç¿ì°í °Ë»öµÈ °á°ú¸¦ ¼±ÅÃÇØ¼­ »õÃ¢¿¡¼­ Á¤º¸ ¶ç¿ï °Å¶ó¼­ ÀÌ sql »ç¿ë¾ÈÇÒ°Í °°¾Æ¿ä.. µµ¼­¸íÀÌ 1°³¶ó°í Áßº¹ÄÚµå°¡ ¶Ç °É·Á¼­..
--- ¸¸¾à »ç¿ë½Ã Áßº¹ÄÚµå °Ë»ç ¸ÕÀú ÇØ¾ßÇØ¿ä..
-select count(*) from bookinfo where b_name like '%ÀÚ¹Ù%'; -- °¡ ¸¸¾à 1ÀÌ¶ó¸é 
--- ¾Æ·¡ sql »ç¿ë °¡´É
+-- > ê²€ìƒ‰ì°½ ë¨¼ì € ë„ìš°ê³  ê²€ìƒ‰ëœ ê²°ê³¼ë¥¼ ì„ íƒí•´ì„œ ìƒˆì°½ì—ì„œ ì •ë³´ ë„ìš¸ ê±°ë¼ì„œ ì´ sql ì‚¬ìš©ì•ˆí• ê²ƒ ê°™ì•„ìš”.. ë„ì„œëª…ì´ 1ê°œë¼ê³  ì¤‘ë³µì½”ë“œê°€ ë˜ ê±¸ë ¤ì„œ..
+-- ë§Œì•½ ì‚¬ìš©ì‹œ ì¤‘ë³µì½”ë“œ ê²€ì‚¬ ë¨¼ì € í•´ì•¼í•´ìš”..
+select count(*) from bookinfo where b_name like '%ìë°”%'; -- ê°€ ë§Œì•½ 1ì´ë¼ë©´ 
+-- ì•„ë˜ sql ì‚¬ìš© ê°€ëŠ¥
 
 select m.m_code, m.m_name, lend_date, return_date, if(datediff(current_date, lend_date)>2, 'Y', 'N')
 from paymentIO p 
 join memberInfo m on p.m_code = m.m_code
-join bookInfo b on b.b_code = p.b_code where b.b_sub_code = 0 and b.b_name like '%ÀÚ¹Ù%';
+join bookInfo b on b.b_code = p.b_code where b.b_sub_code = 0 and b.b_name like '%ìë°”%';
 
-6-1. µ¿ÀÏÇÑ Ã¥ ÀÌ¸§ÀÌ Áßº¹µÇ¾î ³ª¿À¸é, »õÃ¢¿¡¼­ Å¬¸¯½Ã, µµ¼­ ÄÚµå·Î Àç °Ë»ö
+6-1. ë™ì¼í•œ ì±… ì´ë¦„ì´ ì¤‘ë³µë˜ì–´ ë‚˜ì˜¤ë©´, ìƒˆì°½ì—ì„œ í´ë¦­ì‹œ, ë„ì„œ ì½”ë“œë¡œ ì¬ ê²€ìƒ‰
 select m.m_code, m.m_name, lend_date, return_date, if(datediff(current_date, lend_date)>2, 'Y', 'N')
 from paymentIO p 
 join memberInfo m on p.m_code = m.m_code
 join bookInfo b on b.b_code = p.b_code where b.b_code= ? and b.b_sub_code = ? ;
 
 
-7. ÃÑ ´ë¿© È½¼ö
+7. ì´ ëŒ€ì—¬ íšŸìˆ˜
 select b_lend_count from bookLend where b_code=? and b_sub_code = ?;
       
-(¾ÕÀå¿¡¼­ ÀÚµ¿À¸·Î +1µÇµµ·Ï ÇØ³õÀ½: update b_lend_info set b_lend_count=(b_lend_count+1) where b_code=? and b_sub_code = ?; )
+(ì•ì¥ì—ì„œ ìë™ìœ¼ë¡œ +1ë˜ë„ë¡ í•´ë†“ìŒ: update b_lend_info set b_lend_count=(b_lend_count+1) where b_code=? and b_sub_code = ?; )
 
 
-8. µµ¼­ºĞ·ù ÄÚµå·Î °Ë»ö
+8. ë„ì„œë¶„ë¥˜ ì½”ë“œë¡œ ê²€ìƒ‰
 select b_code, b_sub_code, b_name, author, p_code, price, c.c_name from bookinfo b join coden c where c_code='?';
