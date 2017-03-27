@@ -1,57 +1,50 @@
--- <<µµ¼­ÇöÈ²>>
--- 1. µµ¼­ÇöÈ² 
--- 1-1. ÃÑ º¸À¯ ±Ç¼ö 
+-- <<ë„ì„œí˜„í™©>>
+-- 1. ë„ì„œí˜„í™© 
+-- 1-1. ì´ ë³´ìœ  ê¶Œìˆ˜ 
 select count(*) from book_project.bookInfo;
--- 1-2. ÃÑ ¿¬Ã¼ ±Ç¼ö : ¹Ý³³µÈ ¿¹Àü ±â·Ï ¸»°í **ÇöÀç½ÃÁ¡**¿¡¼­ ¹Ý³³µÇÁö ¾Ê°í ¿¬Ã¼ÁßÀÎ ±Ç¼ö
+-- 1-2. ì´ ì—°ì²´ ê¶Œìˆ˜ : ë°˜ë‚©ëœ ì˜ˆì „ ê¸°ë¡ ë§ê³  **í˜„ìž¬ì‹œì **ì—ì„œ ë°˜ë‚©ë˜ì§€ ì•Šê³  ì—°ì²´ì¤‘ì¸ ê¶Œìˆ˜
 select count(*) from book_project.bookInfo b
 inner join book_project.paymentIO p on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code 
 where return_date is null and (DATEDIFF(CURRENT_DATE,lend_date) >= 3);
--- 1-3. ÃÑ ´ë¿©È½¼ö : ¿¹Àü ±â·Ï ¸»°í **ÇöÀç½ÃÁ¡**¿¡¼­ ´ë¿©»óÅÂÀÎ ±Ç¼ö
+-- 1-3. ì´ ëŒ€ì—¬íšŸìˆ˜ : ì˜ˆì „ ê¸°ë¡ ë§ê³  **í˜„ìž¬ì‹œì **ì—ì„œ ëŒ€ì—¬ìƒíƒœì¸ ê¶Œìˆ˜
 select count(*) from book_project.bookInfo b
 inner join book_project.paymentIO p on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code 
 where return_date is null;
 
--- 2. ºÐ¾ßº° º¸À¯ ±Ç¼ö : [ºÐ·ù],[±Ç¼ö] Ãâ·Â
+-- 2. ë¶„ì•¼ë³„ ë³´ìœ  ê¶Œìˆ˜ : [ë¶„ë¥˜],[ê¶Œìˆ˜] ì¶œë ¥
 select c_name, count(*) from book_project.bookinfo group by c_name; 
--- 2-1. º¸À¯ ÃÑ ±Ç¼ö -- 20
+-- 2-1. ë³´ìœ  ì´ ê¶Œìˆ˜ -- 20
 select count(*) from book_project.bookinfo;
 
 
--- 3. ¼øÀ§ »Ì±â
+-- 3. ìˆœìœ„ ë½‘ê¸°
 
--- 1. ÀüÃ¼ ½ºÅ×µð 1~3À§
--- **** ±×·ìÀ¸·Î ¹­¾úÀ»¶§ insert_Date´Â ¹«½¼ ±âÁØÀ¸·Î ³ªÅ¸³ª´Â°¡??? *****
-select count(*) cnt, c_name, p.b_code, b_name, b.author, insert_Date from book_project.paymentio p
+-- 1. ì „ì²´ ìŠ¤í…Œë”” 1~3ìœ„
+-- **** ê·¸ë£¹ìœ¼ë¡œ ë¬¶ì—ˆì„ë•Œ insert_DateëŠ” ë¬´ìŠ¨ ê¸°ì¤€ìœ¼ë¡œ ë‚˜íƒ€ë‚˜ëŠ”ê°€??? *****
+select count(*) cnt, c_name, p.b_code, b_name, b.author, min(insert_Date) in_date from book_project.paymentio p
 inner join book_project.bookinfo b on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code 
-group by p.b_code order by cnt desc;
+group by p.b_code order by cnt desc, in_date desc
 limit 0, 3; 
 
 
--- test 
-select count(*) cnt, c_name, p.b_code, b_name, b.author, insert_Date from book_project.paymentio p
-inner join book_project.bookinfo b on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code 
-order by cnt desc;
-
-limit 0, 3; 
-
--- 2. ¿ùº° º£½ºÆ® 1~3À§
-select count(*) cnt, c_name, p.b_code, b_name, b.author from book_project.paymentio p
+-- 2. ì›”ë³„ ë² ìŠ¤íŠ¸ 1~3ìœ„
+select count(*) cnt, c_name, p.b_code, b_name, b.author, min(insert_Date) in_date from book_project.paymentio p
 inner join book_project.bookinfo b on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code 
 where lend_date >= '2017-01-01' and lend_date < '2017-02-01' 
-group by p.b_code order by cnt desc 
+group by p.b_code order by cnt desc, in_date desc 
 limit 0, 3; 
 
--- 3. ºÐ¾ßº° ½ºÅ×µð 1~3À§
-select count(*) cnt, c_name, p.b_code, b_name, b.author from book_project.paymentio p
+-- 3. ë¶„ì•¼ë³„ ìŠ¤í…Œë”” 1~3ìœ„
+select count(*) cnt, c_name, p.b_code, b_name, b.author, min(insert_Date) in_date from book_project.paymentio p
 inner join book_project.bookinfo b on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code 
-where c_name = '»çÈ¸' 
-group by p.b_code order by cnt desc
+where c_name = ?
+group by p.b_code order by cnt desc, in_date desc
 limit 0, 3; 
 
--- 4. ¿ùº° ºÐ¾ßº° º£½ºÆ® 1~3À§
-select count(*) cnt, c_name, p.b_code, b_name, b.author from book_project.paymentio p
+-- 4. ì›”ë³„ ë¶„ì•¼ë³„ ë² ìŠ¤íŠ¸ 1~3ìœ„
+select count(*) cnt, c_name, p.b_code, b_name, b.author, min(insert_Date) in_date from book_project.paymentio p
 inner join book_project.bookinfo b on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code 
-where c_name = '»çÈ¸' 
+where c_name = ? 
 and lend_date >= '2017-01-01' and lend_date < '2017-02-01' 
-group by p.b_code order by cnt desc
+group by p.b_code order by cnt desc, in_date desc
 limit 0, 3; 
