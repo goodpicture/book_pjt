@@ -19,6 +19,7 @@ SET c_code='T1'
 WHERE c_name='스포츠';
 
 쿼리
-UPDATE coden
-SET c_code=?
-WHERE c_name=?
+
+UPDATE coden SET c_code=? WHERE c_name=?
+
+update coden set c_name = 바꿀값? where c_name = 이전값?;
