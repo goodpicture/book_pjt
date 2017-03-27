@@ -15,6 +15,7 @@ SELECT p_code, publisher, p_name, p_tel, p_zip_code, p_address FROM book_project
 -- 2. 수정
 UPDATE book_project.publisherinfo
 SET publisher=?, p_name=?, p_tel=?, p_zip_code=?, p_address=?
-WHERE p_code='P024';
+WHERE p_code=?;
 -- 2-1. 수정후 추가된 출판사 포함 데이터들 출력 
 SELECT p_code, publisher, p_name, p_tel, p_zip_code, p_address FROM book_project.publisherinfo;
+
