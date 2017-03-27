@@ -1,43 +1,32 @@
--- <<´ë¿©°ü¸®>>
--- #Á¦ÀÏ Ã³À½ Ã¢ÀÌ ¶ã ¶§  
--- 1. ´ë¿©°¡´É ¸ñ·Ï¿¡ Ãâ·ÂÇÒ Á¤º¸ [µµ¼­ÄÚµå],[µµ¼­Áßº¹ÄÚµå], [µµ¼­¸í],[ÀúÀÚ],[ÃâÆÇ»ç],[°¡°İ],[ÃÑ´ë¿©È½¼ö]
+-- <<ëŒ€ì—¬ê´€ë¦¬>>
+-- #ì œì¼ ì²˜ìŒ ì°½ì´ ëœ° ë•Œ  
+-- 1. ëŒ€ì—¬ê°€ëŠ¥ ëª©ë¡ì— ì¶œë ¥í•  ì •ë³´ [ë„ì„œì½”ë“œ],[ë„ì„œì¤‘ë³µì½”ë“œ], [ë„ì„œëª…],[ì €ì],[ì¶œíŒì‚¬],[ê°€ê²©],[ì´ëŒ€ì—¬íšŸìˆ˜]
 SELECT b.b_code, b.b_sub_code, b_name, author, p.publisher, price, l.b_lend_count FROM book_project.bookInfo b 
 inner join book_project.publisherInfo p on b.p_code = p.p_code 
 inner join book_project.bookLend bl on b.b_code = bl.b_code and b.b_sub_code = bl.b_sub_code
 where l.is_lending = false;
 
--- # ´ë¿©¹öÆ° ´©¸£±â
--- 1. ´ë¿©°¡´É¸ñ·Ï¿¡¼­ µµ¼­ ¼±ÅÃ½Ã ÀÔ·ÂÃ¢¿¡ Á¤º¸ »Ñ¸®±â
--- 1-1. ¿ŞÂÊ µµ¼­Á¤º¸ »Ñ¸² [µµ¼­ÄÚµå],[µµ¼­Áßº¹ÄÚµå],[µµ¼­¸í],[ÀúÀÚ],[ÃâÆÇ»ç],[°¡°İ],[ÃÑ´ë¿©È½¼ö]
+-- # ëŒ€ì—¬ë²„íŠ¼ ëˆ„ë¥´ê¸°
+-- 1. ëŒ€ì—¬ê°€ëŠ¥ëª©ë¡ì—ì„œ ë„ì„œ ì„ íƒì‹œ ì…ë ¥ì°½ì— ì •ë³´ ë¿Œë¦¬ê¸°
+-- 1-1. ì™¼ìª½ ë„ì„œì •ë³´ ë¿Œë¦¼ [ë„ì„œì½”ë“œ],[ë„ì„œì¤‘ë³µì½”ë“œ],[ë„ì„œëª…],[ì €ì],[ì¶œíŒì‚¬],[ê°€ê²©],[ì´ëŒ€ì—¬íšŸìˆ˜]
 SELECT b.b_code, b.b_sub_code b_name, author, p.publisher, price, bl.b_lend_count FROM book_project.bookInfo b 
 inner join book_project.publisherInfo p on b.p_code = p.p_code 
 inner join book_project.bookLend bl on b.b_code = bl.b_code and b.b_sub_code = bl.b_sub_code
-where b.b_code= 'J001' and b.b_sub_code = 1;
+where b.b_code= ? and b.b_sub_code = ?;
 
--- 2. ¿À¸¥ÂÊ¿¡¼­ È¸¿ø °Ë»ö 
--- 2-0. ÇØ´ç È¸¿øÀÌ Á¸ÀçÇÏ´Â°¡?
-select count(*) from book_project.memberlend where m_code = 'M011'; -- ÀÖÀ¸¸é 1: ¾øÀ¸¸é :0
--- 2-1. ´ë¿© °¡´ÉÇÑ È¸¿øÀÎ°¡? -- ´ë¿©ºÒ°¡½Ã Ã¢À» ¶ç¿ö¼­ Á¤º¸ ¶ç¿ìÁö ¾ÊÀ½
-select is_posbl from book_project.memberLend where m_code = 'M009'; -- 1/0 ¹İÈ¯
+-- 2. ì˜¤ë¥¸ìª½ì—ì„œ íšŒì› ê²€ìƒ‰ 
+-- 2-0. í•´ë‹¹ íšŒì›ì´ ì¡´ì¬í•˜ëŠ”ê°€?
+select count(*) from book_project.memberlend where m_code = ?; -- ìˆìœ¼ë©´ 1: ì—†ìœ¼ë©´ :0
+-- 2-1. ëŒ€ì—¬ ê°€ëŠ¥í•œ íšŒì›ì¸ê°€? -- ëŒ€ì—¬ë¶ˆê°€ì‹œ ì°½ì„ ë„ì›Œì„œ ì •ë³´ ë„ìš°ì§€ ì•ŠìŒ
+select is_posbl from book_project.memberLend where m_code = ?; -- 1/0 ë°˜í™˜
 
--- 2-1-1. ´ë¿©ºÒ°¡ È¸¿øÀÌ¶ó¸é ºí·¢¸®½ºÆ® ÇØ´çÀÎÁö °Ë»ö
-select if(black_date is null, " ", black_date) from book_project.memberlend where m_code = 'M010'; -- ºí·¢ ¾Æ´Ò½Ã " " ºí·¢ÀÏ½Ã date Çü½Ä ¹İÈ¯
---        --ºí·¢ÀÌ¶ó¸é ( ÇØ´ç½Ã ´ë¿© ±İÁö¸¶Áö¸·ÀÏ Ãâ·Â)(~~±îÁö ´ë¿©ºÒ°¡)¸Ş¼¼Áö jLabel·Î Ãâ·ÂÇØÁÙ °Í;
--- 2-1-2. ´ë¿©°¡´ÉÈ¸¿øÀÌ¶ó¸é  [È¸¿øÄÚµå], [¼º¸í],[ÀüÈ­¹øÈ£] Ãâ·Â;
-select m_code, m_name, m_tel from book_project.memberInfo where m_code = 'M009';
+-- 2-1-1. ëŒ€ì—¬ë¶ˆê°€ íšŒì›ì´ë¼ë©´ ë¸”ë™ë¦¬ìŠ¤íŠ¸ í•´ë‹¹ì¸ì§€ ê²€ìƒ‰
+select if(black_date is null, " ", black_date) from book_project.memberlend where m_code = ?; -- ë¸”ë™ ì•„ë‹ì‹œ " " ë¸”ë™ì¼ì‹œ date í˜•ì‹ ë°˜í™˜
+--        --ë¸”ë™ì´ë¼ë©´ ( í•´ë‹¹ì‹œ ëŒ€ì—¬ ê¸ˆì§€ë§ˆì§€ë§‰ì¼ ì¶œë ¥)(~~ê¹Œì§€ ëŒ€ì—¬ë¶ˆê°€)ë©”ì„¸ì§€ jLabelë¡œ ì¶œë ¥í•´ì¤„ ê²ƒ;
+-- 2-1-2. ëŒ€ì—¬ê°€ëŠ¥íšŒì›ì´ë¼ë©´  [íšŒì›ì½”ë“œ], [ì„±ëª…],[ì „í™”ë²ˆí˜¸] ì¶œë ¥;
+select m_code, m_name, m_tel from book_project.memberInfo where m_code = ?;
 
--- 3. ´ë¿©¹öÆ° // Æ®·£Àè¼Ç »ç¿ë
--- 3-1. <<È¸¿ø´ë¿©Á¤º¸>>Å×ÀÌºí¿¡¼­ [ÃÑ´ë¿©±Ç¼ö] +1, <<µµ¼­´ë¿©Á¤º¸>>Å×ÀÌºí¿¡¼­ [ÃÑ´ë¿©È½¼ö] +1
--- UPDATE book_project.bookLend SET b_lend_count=(b_lend_count+1) WHERE b_code= 'T001' and b_sub_code = 2;-- 3
--- UPDATE book_project.memberLend SET m_lend_count=(m_lend_count+1) WHERE m_code= 'M001';
--- select m_lend_count from book_project.memberLend where m_code = 'M001';
--- select b_lend_count, b_lend_count*2 from book_project.bookLend where b_code = 'T001' and b_sub_code = 2; -- 3 / ¾÷µ¥ÀÌÆ® Á¦´ë·Î µÇ¾ú´ÂÁö È®ÀÎÇÑ °Å
--- 3-2. <<Ãâ³³>>Å×ÀÌºí [È¸¿øÄÚµå],[µµ¼­ÄÚµå],[´ë¿©ÀÏÀÚ(ÄÄÇ»ÅÍ ÇöÀçÀÏÀÚ): CURRENT_DATE()? now()?],[¹İ³³ÀÏÀÚ(ÃÊ±âÈ­ : null)]
--- INSERT INTO book_project.paymentIO (b_code, b_sub_code, m_code, lend_date, return_date) values (_b_code, _b_sub_code, _m_code, CURRENT_DATE(), null);
--- select * from book_project.paymentIO;
--- delete from book_project.paymentIO where no=100;
--- 3-3. <<µµ¼­´ë¿©Á¤º¸>>Å×ÀÌºí¿¡¼­ [´ë¿©¿©ºÎ] true ¼³Á¤
--- UPDATE book_project.bookLend SET is_lending=true WHERE b_code='J001'and b_sub_code = 2;
+-- 3. ëŒ€ì—¬ë²„íŠ¼ // í”„ë¡œì‹œì € ì‚¬ìš©
 delimiter $$
 create procedure book_project.proc_paymentIO_insert(
 	in _b_code char(4),
@@ -51,12 +40,15 @@ begin
 	
 	
 	start transaction;
+	-- <<íšŒì›ëŒ€ì—¬ì •ë³´>>í…Œì´ë¸”ì—ì„œ [ì´ëŒ€ì—¬ê¶Œìˆ˜] +1, [í˜„ì¬ëŒ€ì—¬ê¶Œìˆ˜] +1,  <<ë„ì„œëŒ€ì—¬ì •ë³´>>í…Œì´ë¸”ì—ì„œ [ì´ëŒ€ì—¬íšŸìˆ˜] +1, [ëŒ€ì—¬ì—¬ë¶€] false
 	UPDATE book_project.bookLend SET  b_lend_count=(b_lend_count+1), is_lending=true WHERE b_code=_b_code and b_sub_code = _b_sub_code;
 	UPDATE book_project.memberLend SET  m_lend_count=(m_lend_count+1), m_now_count=(m_now_count+1) WHERE m_code=_m_code;
+	-- <<ì¶œë‚©>>í…Œì´ë¸” [íšŒì›ì½”ë“œ],[ë„ì„œì½”ë“œ],[ëŒ€ì—¬ì¼ì(ì»´í“¨í„° í˜„ì¬ì¼ì): CURRENT_DATE()],[ë°˜ë‚©ì¼ì(ì´ˆê¸°í™” : null)]
 	INSERT INTO paymentIO (b_code, b_sub_code, m_code, lend_date, return_date) VALUES(_b_code, _b_sub_code, _m_code, current_date, null);
 	select m_now_count into _m_now_count from book_project.memberlend where m_code = _m_code;
 	
-	if _m_now_count > 4 then -- [´ë¿©±Ç¼ö] 5±ÇµÇ¸é [´ë¿©°¡´É¿©ºÎ] false·Î ¼³Á¤
+	-- [ëŒ€ì—¬ê¶Œìˆ˜] 5ê¶Œë˜ë©´ [ëŒ€ì—¬ê°€ëŠ¥ì—¬ë¶€] falseë¡œ ì„¤ì •
+	if _m_now_count > 4 then
 		update book_project.memberlend set is_posbl = false where m_code = _m_code;
 	end if;
 	
@@ -72,13 +64,8 @@ delimiter ;
 
 
 
--- 3-4. [µµ¼­ ´ë¿© °¡´É ¸ñ·Ï]¿¡ ÀÚ·á Ãâ·Â : 1¹ø ´Ù½Ã ½ÇÇà
+-- 3-4. [ë„ì„œ ëŒ€ì—¬ ê°€ëŠ¥ ëª©ë¡]ì— ìë£Œ ì¶œë ¥ : 1ë²ˆ ë‹¤ì‹œ ì‹¤í–‰
 SELECT b.b_code, b.b_sub_code, b_name, author, p.publisher, price, l.b_lend_count FROM book_project.bookInfo b 
 inner join book_project.publisherInfo p on b.p_code = p.p_code 
 inner join book_project.bookLend l on b.b_code = l.b_code and b.b_sub_code = l.b_sub_code
 where l.is_lending = false;
-
-SELECT b.b_code, b.b_sub_code, b_name, author, p.publisher, price, bl.b_lend_count FROM book_project.bookInfo b 
-inner join book_project.publisherInfo p on b.p_code = p.p_code 
-inner join book_project.bookLend bl on b.b_code = bl.b_code and b.b_sub_code = bl.b_sub_code
-where bl.is_lending = false;
