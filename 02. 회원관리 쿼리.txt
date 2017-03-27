@@ -1,33 +1,33 @@
-[È¸¿ø°ü¸®]
+[íšŒì›ê´€ë¦¬]
 
--- È¸¿ø Ãß°¡
-insert into book_project.memberinfo(m_code, m_name, m_tel, m_zip_code, m_address, m_pass, is_manager) values 
+-- íšŒì› ì¶”ê°€
+insert into memberinfo(m_code, m_name, m_tel, m_zip_code, m_address, m_pass, is_manager) values 
 (?,?,?,?,?,?,?);
 
 
--- È¸¿ø Ãß°¡ Æ®¸®°Å : È¸¿ø Ãß°¡½Ã, È¸¿ø´ë¿©Á¤º¸¿¡µµ »õ·Î¿î È¸¿ø Ãß°¡ µÇ¾î¾ß ÇÏ´Â Æ®¸®°Å
-create trigger book_project.insert_memberinfo
-after insert on book_project.memberinfo
+-- íšŒì› ì¶”ê°€ íŠ¸ë¦¬ê±° : íšŒì› ì¶”ê°€ì‹œ, íšŒì›ëŒ€ì—¬ì •ë³´ì—ë„ ìƒˆë¡œìš´ íšŒì› ì¶”ê°€ ë˜ì–´ì•¼ í•˜ëŠ” íŠ¸ë¦¬ê±°
+create trigger insert_memberinfo
+after insert on memberinfo
 for each row begin
-	insert into book_project.memberLend(m_code) values (new.m_code);
+	insert into memberLend(m_code) values (new.m_code);
 end 
 
--- È¸¿ø Á¤º¸ ¼öÁ¤
-update book_project.memberinfo set m_name=?, m_tel=?, m_zip_code=?, m_address=?, m_pass=? where m_code=?;
+-- íšŒì› ì •ë³´ ìˆ˜ì •
+update memberinfo set m_name=?, m_tel=?, m_zip_code=?, m_address=?, m_pass=? where m_code=?;
 
--- È¸¿ø Å»Åğ(»èÁ¦)
-update book_project.memberinfo set is_secsn=true where m_code=?;
+-- íšŒì› íƒˆí‡´(ì‚­ì œ)
+update memberinfo set is_secsn=true where m_code=?;
 
--- È¸¿ø Å»Åğ º¹±¸ (Å»Åğ Ãë¼Ò)
-update book_project.memberinfo set is_secsn=false where m_code=?;
+-- íšŒì› íƒˆí‡´ ë³µêµ¬ (íƒˆí‡´ ì·¨ì†Œ)
+update memberinfo set is_secsn=false where m_code=?;
 
--- Å»ÅğÇÑ È¸¿ø¸ñ·Ï Ãâ·Â
+-- íƒˆí‡´í•œ íšŒì›ëª©ë¡ ì¶œë ¥
 select m_code, m_name, m_tel, m_zip_code, m_address, m_pass, is_manager, is_secsn
 from memberinfo where is_secsn=true;
 
--- ºí·¢¸®½ºÆ® Ãß°¡ÇÑ ÇÁ·Î½ÃÁ®
+-- ë¸”ë™ë¦¬ìŠ¤íŠ¸ ì¶”ê°€í•œ í”„ë¡œì‹œì ¸
 delimiter $$
-create procedure book_project.proc_paymentIO_update(
+create procedure proc_paymentIO_update(
    in _b_code char(4),
    in _b_sub_code char(4),
    in _m_code char(4),
@@ -60,7 +60,7 @@ begin
    select delay_count into _delay_count from memberlend where m_code=_m_code;   
    select m_now_count into _m_now_count from memberlend where m_code=_m_code;   
    if _delay_count > 2 then   	
-   		if _m_now_count = 0 then -- [¿¬Ã¼È½¼ö ] 3±ÇÀÌ»ó, ÇöÀç ´ë¿© ±Ç¼ö°¡ 0      
+   		if _m_now_count = 0 then -- [ì—°ì²´íšŸìˆ˜ ] 3ê¶Œì´ìƒ, í˜„ì¬ ëŒ€ì—¬ ê¶Œìˆ˜ê°€ 0      
      	 select max(return_date) into _black from paymentio where m_code = _m_code;
      	 update memberlend set black_date = date_add(_black , INTERVAL 30 DAY) where m_code=_m_code;
  	  end if; 
