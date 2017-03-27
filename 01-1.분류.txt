@@ -1,0 +1,24 @@
+
+
+분류 전부다 보는거
+select*from coden;
+
+
+분류 새로운거 추가하는 인설트
+insert into coden(c_name,c_code) values
+('경제','E'),('스포츠','St');
+
+쿼리
+insert into coden(c_name,c_code) values
+(?,?)
+
+
+업데이트
+UPDATE coden
+SET c_code='T1'
+WHERE c_name='스포츠';
+
+쿼리
+UPDATE coden
+SET c_code=?
+WHERE c_name=?
