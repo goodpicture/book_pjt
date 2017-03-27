@@ -1,24 +1,24 @@
 
 
-ºĞ·ù ÀüºÎ´Ù º¸´Â°Å
-select*from coden;
+ë¶„ë¥˜ ì „ë¶€ë‹¤ ë³´ëŠ”ê±°
+select c_name, c_code from coden;
 
 
-ºĞ·ù »õ·Î¿î°Å Ãß°¡ÇÏ´Â ÀÎ¼³Æ®
+ë¶„ë¥˜ ìƒˆë¡œìš´ê±° ì¶”ê°€í•˜ëŠ” ì¸ì„¤íŠ¸
 insert into coden(c_name,c_code) values
-('°æÁ¦','E'),('½ºÆ÷Ã÷','St');
+('ê²½ì œ','E'),('ìŠ¤í¬ì¸ ','St');
 
-Äõ¸®
+ì¿¼ë¦¬
 insert into coden(c_name,c_code) values
 (?,?)
 
 
-¾÷µ¥ÀÌÆ®
+ì—…ë°ì´íŠ¸
 UPDATE coden
 SET c_code='T1'
-WHERE c_name='½ºÆ÷Ã÷';
+WHERE c_name='ìŠ¤í¬ì¸ ';
 
-Äõ¸®
+ì¿¼ë¦¬
 UPDATE coden
 SET c_code=?
 WHERE c_name=?
