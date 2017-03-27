@@ -21,10 +21,11 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
+    
 }
 
 jar{
-   mainClassName='kr.or.dgit.book_project'
+   mainClassName='kr.or.dgit.book_project.TestMain'
    baseName='TestMain'
    appendix='bin'
    version=1.0
