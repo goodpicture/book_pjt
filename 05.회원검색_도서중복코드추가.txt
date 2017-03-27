@@ -1,61 +1,62 @@
--- <<È¸¿ø °Ë»ö>>
--- 1. [[¼º¸í]]À¸·Î <<È¸¿ø>>Å×ÀÌºí °Ë»ö 
--- 1-1. ÀÌ¸§À¸·Î °Ë»öÇÑ µ¥ÀÌÅÍ°¡ Áßº¹ÀÎÁö È®ÀÎ
-select count(*) from book_project.memberInfo where m_name like '%º¸¿µ%'; -- 1ÀÌ ¾Æ´Ï¸é Áßº¹ÀÌ µ¥ÀÌÅÍ°¡ Á¸ÀçÇÏ´Â °Í
--- 1-2.[[¼º¸í]]À¸·Î <<È¸¿ø>>Å×ÀÌºí °Ë»ö  : [¼º¸í], [È¸¿øÄÚµå], [ÀüÈ­¹øÈ£], [¿ìÆí¹øÈ£], [ÁÖ¼Ò], <<È¸¿ø´ë¿©Á¤º¸>>¿¡¼­ [ºí·¢¸®½ºÆ®Á¾·á ³¯Â¥] °¡Á®¿À±â
+-- <<íšŒì› ê²€ìƒ‰>>
+-- 1. [[ì„±ëª…]]ìœ¼ë¡œ <<íšŒì›>>í…Œì´ë¸” ê²€ìƒ‰ 
+-- 1-1. ì´ë¦„ìœ¼ë¡œ ê²€ìƒ‰í•œ ë°ì´í„°ê°€ ì¤‘ë³µì¸ì§€ í™•ì¸
+select count(*) from book_project.memberInfo where m_name like '%ë³´ì˜%'; -- 1ì´ ì•„ë‹ˆë©´ ì¤‘ë³µì´ ë°ì´í„°ê°€ ì¡´ì¬í•˜ëŠ” ê²ƒ
+-- 1-2.[[ì„±ëª…]]ìœ¼ë¡œ <<íšŒì›>>í…Œì´ë¸” ê²€ìƒ‰  : [ì„±ëª…], [íšŒì›ì½”ë“œ], [ì „í™”ë²ˆí˜¸], [ìš°í¸ë²ˆí˜¸], [ì£¼ì†Œ], <<íšŒì›ëŒ€ì—¬ì •ë³´>>ì—ì„œ [ë¸”ë™ë¦¬ìŠ¤íŠ¸ì¢…ë£Œ ë‚ ì§œ] ê°€ì ¸ì˜¤ê¸°
 select m.m_name, m.m_code, m_tel, m_zip_code, m_address, if(black_date is null," ",black_date) from book_project.memberInfo m
-inner join book_project.memberlend ml on m.m_code = ml.m_code where m.m_name like '%º¸¿µ%';
--- 1-3. Áßº¹ ¹ß»ı½Ã ÇØ´ç µ¥ÀÌÅÍ ¶ç¿ì°í ¼±ÅÃÇÏ¸é ÇØ´ç [[È¸¿øÄÚµå]] ·Î Àç°Ë»ö
+inner join book_project.memberlend ml on m.m_code = ml.m_code where m.m_name like '%ë³´ì˜%';
+-- 1-3. ì¤‘ë³µ ë°œìƒì‹œ í•´ë‹¹ ë°ì´í„° ë„ìš°ê³  ì„ íƒí•˜ë©´ í•´ë‹¹ [[íšŒì›ì½”ë“œ]] ë¡œ ì¬ê²€ìƒ‰
 select m.m_name, m.m_code, m_tel, m_zip_code, m_address, if(black_date is null," ",black_date) from book_project.memberInfo m
-inner join book_project.memberlend ml on m.m_code = ml.m_code where m.m_code = 'M003';
+inner join book_project.memberlend ml on m.m_code = ml.m_code where m.m_code = ?;
 
--- 2. [[ÀüÈ­¹øÈ£]]·Î °Ë»ö
--- 2-1.  [[ÀüÈ­¹øÈ£]]·Î °Ë»öÇÑ µ¥ÀÌÅÍ°¡ Áßº¹ÀÎÁö È®ÀÎ : µŞÀÚ¸®°Ë»ö / ¹øÈ£ÀüÃ¼ °Ë»ö °¡´É
-select count(*) from book_project.memberInfo where m_tel like '%1234'; -- 1ÀÌ ¾Æ´Ï¸é Áßº¹ÀÌ µ¥ÀÌÅÍ°¡ Á¸ÀçÇÏ´Â °Í
--- 2-2.  [[ÀüÈ­¹øÈ£]]·Î °Ë»ö : [¼º¸í], [È¸¿øÄÚµå], [ÀüÈ­¹øÈ£], [¿ìÆí¹øÈ£], [ÁÖ¼Ò], <<È¸¿ø´ë¿©Á¤º¸>>¿¡¼­ [ºí·¢¸®½ºÆ®Á¾·á ³¯Â¥] °¡Á®¿À±â
+-- 2. [[ì „í™”ë²ˆí˜¸]]ë¡œ ê²€ìƒ‰
+-- 2-1.  [[ì „í™”ë²ˆí˜¸]]ë¡œ ê²€ìƒ‰í•œ ë°ì´í„°ê°€ ì¤‘ë³µì¸ì§€ í™•ì¸ : ë’·ìë¦¬ê²€ìƒ‰ / ë²ˆí˜¸ì „ì²´ ê²€ìƒ‰ ê°€ëŠ¥
+select count(*) from book_project.memberInfo where m_tel like '%1234'; -- 1ì´ ì•„ë‹ˆë©´ ì¤‘ë³µì´ ë°ì´í„°ê°€ ì¡´ì¬í•˜ëŠ” ê²ƒ
+-- 2-2.  [[ì „í™”ë²ˆí˜¸]]ë¡œ ê²€ìƒ‰ : [ì„±ëª…], [íšŒì›ì½”ë“œ], [ì „í™”ë²ˆí˜¸], [ìš°í¸ë²ˆí˜¸], [ì£¼ì†Œ], <<íšŒì›ëŒ€ì—¬ì •ë³´>>ì—ì„œ [ë¸”ë™ë¦¬ìŠ¤íŠ¸ì¢…ë£Œ ë‚ ì§œ] ê°€ì ¸ì˜¤ê¸°
 select m.m_name, m.m_code, m_tel, m_zip_code, m_address, if(black_date is null," ",black_date) from book_project.memberInfo m
 inner join book_project.memberLend ml on m.m_code = ml.m_code where m.m_tel like '%1234';
 select m.m_name, m.m_code, m_tel, m_zip_code, m_address, if(black_date is null," ",black_date) from book_project.memberInfo m
-inner join book_project.memberLend ml on m.m_code = ml.m_code where m.m_tel like '%010-1234-1234';
--- 2-3. Áßº¹ ¹ß»ı½Ã ÇØ´ç µ¥ÀÌÅÍ ¶ç¿ì°í ¼±ÅÃÇÏ¸é ÇØ´ç [[È¸¿øÄÚµå]] ·Î Àç °Ë»ö
+inner join book_project.memberLend ml on m.m_code = ml.m_code where m.m_tel like '%?';
+-- 2-3. ì¤‘ë³µ ë°œìƒì‹œ í•´ë‹¹ ë°ì´í„° ë„ìš°ê³  ì„ íƒí•˜ë©´ í•´ë‹¹ [[íšŒì›ì½”ë“œ]] ë¡œ ì¬ ê²€ìƒ‰
 select m.m_name, m.m_code, m_tel, m_zip_code, m_address, if(black_date is null," ",black_date) from book_project.memberInfo m
-inner join book_project.memberLend ml on m.m_code = ml.m_code where m.m_code = 'M003';
+inner join book_project.memberLend ml on m.m_code = ml.m_code where m.m_code = ?;
 
--- 3. [[È¸¿øÄÚµå]] ·Î °Ë»ö
+-- 3. [[íšŒì›ì½”ë“œ]] ë¡œ ê²€ìƒ‰
 select m.m_name, m.m_code, m_tel, m_zip_code, m_address, if(black_date is null," ",black_date) from book_project.memberInfo m
-inner join book_project.memberLend ml on m.m_code = ml.m_code where m.m_code = 'M003';
+inner join book_project.memberLend ml on m.m_code = ml.m_code where m.m_code = ?;
 
 
--- 4. ÇÏ´Ü¿¡ ¶ç¿ï ((´ë¿©Á¤º¸)) [µµ¼­ÄÚµå],[µµ¼­¸í],[´ë¿©ÀÏÀÚ],[¹İ³³ÀÏÀÚ],[¿¬Ã¼¿©ºÎ(´ë¿©ÈÄ 3ÀÏÀÌÈÄ ºÎÅÍ: 10ÀÏ ´ë¿©½Ã 12ÀÏÀÌ ¸¶°¨. 13ÀÏÀÌ ¿¬Ã¼½ÃÀÛ)]
--- 4-1. ¹Ì¹İ³³µµ¼­ (ÇöÀç ³¯Â¥¸¦ ±âÁØÀ¸·Î °è»ê) : 19°³
+-- 4. í•˜ë‹¨ì— ë„ìš¸ ((ëŒ€ì—¬ì •ë³´)) [ë„ì„œì½”ë“œ],[ë„ì„œëª…],[ëŒ€ì—¬ì¼ì],[ë°˜ë‚©ì¼ì],[ì—°ì²´ì—¬ë¶€(ëŒ€ì—¬í›„ 3ì¼ì´í›„ ë¶€í„°: 10ì¼ ëŒ€ì—¬ì‹œ 12ì¼ì´ ë§ˆê°. 13ì¼ì´ ì—°ì²´ì‹œì‘)]
+-- 4-1. ë¯¸ë°˜ë‚©ë„ì„œ (í˜„ì¬ ë‚ ì§œë¥¼ ê¸°ì¤€ìœ¼ë¡œ ê³„ì‚°) : 19ê°œ
 -- select b.b_code, b_name, lend_date, return_date, if(DATEDIFF(CURRENT_DATE,lend_date)>2,'Y','N') is_delay from book_project.paymentIO p inner join book_project.bookInfo b on b.b_code = p.b_code where p.return_date is null;
--- 4-2. ¹İ³³µµ¼­ (return_date)¸¦ ±âÁØÀ¸·Î : 20°³
+-- 4-2. ë°˜ë‚©ë„ì„œ (return_date)ë¥¼ ê¸°ì¤€ìœ¼ë¡œ : 20ê°œ
 -- select b.b_code, b_name, lend_date, return_date, if(DATEDIFF(return_date,lend_date) > 2,'Y','N') is_delay from book_project.paymentIO p inner join book_project.bookInfo b on b.b_code = p.b_code where p.return_date is not null;
--- 4-3. À§ µÎ°³ ÇÕÃÄº» °Í : 39°³
+-- 4-3. ìœ„ ë‘ê°œ í•©ì³ë³¸ ê²ƒ : 39ê°œ
 select b.b_code, b.b_sub_code, b_name, lend_date, return_date, 
-if(return_date is null, if(DATEDIFF(CURRENT_DATE,lend_date)>2,'Y','N') , if(DATEDIFF(return_date,lend_date) > 2,'Y','N')) is_delay 
+if(return_date is null, if(DATEDIFF(CURRENT_DATE,lend_date)>2,'Y','N') , 
+if(DATEDIFF(return_date,lend_date) > 2,'Y','N')) is_delay 
 from book_project.paymentIO p
 inner join book_project.bookInfo b on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code 
 inner join book_project.memberinfo m on m.m_code = p.m_code 
-where p.m_code = 'M010';
+where p.m_code = ?;
 
--- 5. ÃÖÇÏ´Ü ÃÑ°è Ãâ·Â
--- 5-1. ¹İ³³µÈ µµ¼­ ¼ö
+-- 5. ìµœí•˜ë‹¨ ì´ê³„ ì¶œë ¥
+-- 5-1. ë°˜ë‚©ëœ ë„ì„œ ìˆ˜
 select count(*) from book_project.paymentIO 
-where return_date is not null and m_code = 'M009'; -- 4
--- 5-1-1. ¹İ³³µÈ µµ¼­ Áß ¿¬Ã¼µÈ µµ¼­ ¼ö
+where return_date is not null and m_code = ?; -- 4
+-- 5-1-1. ë°˜ë‚©ëœ ë„ì„œ ì¤‘ ì—°ì²´ëœ ë„ì„œ ìˆ˜
 select count(*) from book_project.paymentIO 
-where return_date is not null and (DATEDIFF(return_date,lend_date) >2 ) and  m_code = 'M009'; -- 2
+where return_date is not null and (DATEDIFF(return_date,lend_date) >2 ) and  m_code = ?; -- 2
 
--- 5-2. ´ëÃâÁßÀÎ µµ¼­
+-- 5-2. ëŒ€ì¶œì¤‘ì¸ ë„ì„œ
 select count(*) from book_project.paymentIO 
-where return_date is null and m_code = 'M009'; -- 2
--- 5-2-1. ´ëÃâ ÁßÀÎ µµ¼­ Áß ¿¬Ã¼µµ¼­
+where return_date is null and m_code = ?; -- 2
+-- 5-2-1. ëŒ€ì¶œ ì¤‘ì¸ ë„ì„œ ì¤‘ ì—°ì²´ë„ì„œ
 select count(*) from book_project.paymentIO 
-where return_date is null and (DATEDIFF(CURRENT_DATE,lend_date) >2 ) and  m_code = 'M009'; -- 1
--- 5-3. ÃÑ ÀÌ¿ëÇÑ µµ¼­
-select count(*) from book_project.paymentIO where m_code = 'M009'; -- 6
--- 5-3-1. ÃÑ ÀÌ¿ëµµ¼­ Áß ¿¬Ã¼ÁßÀÎ µµ¼­ 
+where return_date is null and (DATEDIFF(CURRENT_DATE,lend_date) >2 ) and  m_code = ?; -- 1
+-- 5-3. ì´ ì´ìš©í•œ ë„ì„œ
+select count(*) from book_project.paymentIO where m_code = ?; -- 6
+-- 5-3-1. ì´ ì´ìš©ë„ì„œ ì¤‘ ì—°ì²´ì¤‘ì¸ ë„ì„œ 
 select count(*) from book_project.paymentIO 
 where if(return_date is null, (DATEDIFF(CURRENT_DATE,lend_date) >2), (DATEDIFF(return_date,lend_date) >2)) 
-and m_code = 'M009'; -- 3
+and m_code = ?; -- 3
