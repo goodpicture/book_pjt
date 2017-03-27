@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
 import javax.swing.JLabel;
+import javax.swing.JProgressBar;
 
 public class TestMain extends JFrame {
 
@@ -43,8 +44,8 @@ public class TestMain extends JFrame {
 		JPanel panel = new JPanel();
 		contentPane.add(panel);
 		
-		JLabel lblNewLabel = new JLabel("ㅎㅇ");
-		panel.add(lblNewLabel);
+		JProgressBar progressBar = new JProgressBar();
+		panel.add(progressBar);
 	}
 
 }

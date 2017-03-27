@@ -22,6 +22,7 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
     
+    compile files('src/main/resources/erp_myframework.jar')
 }
 
 jar{
