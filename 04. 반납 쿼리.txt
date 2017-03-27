@@ -1,22 +1,22 @@
--- 1. ¹Ý³³ÇÊ¿ä µµ¼­¸ñ·Ï (°íÁ¤)
+-- 1. ë°˜ë‚©í•„ìš” ë„ì„œëª©ë¡ (ê³ ì •)
 select b.b_code,b_name,m.m_code,m_name,lend_date, if(datediff(current_date,lend_date)>2,'Y','N') is_delay
 from paymentIO i join memberInfo m on m.m_code = i.m_code
 join bookInfo b on b.b_code = i.b_code where return_date is null;
  
 
--- 2.¹Ý³³ÇÊ¿ä µµ¼­¸ñ·Ï¿¡¼­ ´©¸£¸é ±×¿¡ ÇØ´çÇÏ´Â µ¥ÀÌÅÍ Á¤º¸ ÂÒ¾Æ~~~~~
+-- 2.ë°˜ë‚©í•„ìš” ë„ì„œëª©ë¡ì—ì„œ ëˆ„ë¥´ë©´ ê·¸ì— í•´ë‹¹í•˜ëŠ” ë°ì´í„° ì •ë³´ ì«˜ì•„~~~~~
 select b.b_code,b_name,author,p.p_code,bl.b_lend_count,m.m_code,m.m_name,m.m_tel,lend_date,return_date
 from paymentIO i join bookInfo b on i.b_code=b.b_code join publisherInfo p on b.p_code=p.p_code
 join bookLend bl on b.b_code=bl.b_code join memberInfo m on i.m_code=m.m_code
 where i.b_code='H003' and m.m_code='M009';
 
-xml Ä¿¸®
+xml ì»¤ë¦¬
 select b.b_code,b_name,author,p.p_code,bl.b_lend_count,m.m_code,m.m_name,m.m_tel,lend_date,return_date
 from paymentIO i join bookInfo b on i.b_code=b.b_code join publisherInfo p on b.p_code=p.p_code
 join bookLend bl on b.b_code=bl.b_code join memberInfo m on i.m_code=m.m_code
 where i.b_code=? and m.m_code=?;
 
-Æ®·£Àè¼Ç----
+íŠ¸ëžœìž­ì…˜----
 
 
 CREATE DEFINER=`user_book`@`%` PROCEDURE `book_project`.`proc_paymentIO_update`(
@@ -53,7 +53,7 @@ begin
    select m_now_count into _m_now_count from memberlend where m_code=_m_code;   
    if _delay_count > 2 then
       
-      if _m_now_count = 0 then -- [¿¬Ã¼È½¼ö ] 3±ÇÀÌ»ó, ÇöÀç ´ë¿© ±Ç¼ö°¡ 0      
+      if _m_now_count = 0 then -- [ì—°ì²´íšŸìˆ˜ ] 3ê¶Œì´ìƒ, í˜„ìž¬ ëŒ€ì—¬ ê¶Œìˆ˜ê°€ 0      
       select max(return_date) into _black from paymentio where m_code = _m_code;
       update memberlend set black_date = date_add(_black , INTERVAL 30 DAY) where m_code=_m_code;
    end if; 
@@ -67,7 +67,7 @@ begin
    
 end
 
-È¤½Ã ¸ô¶ó¼­ ¿Ã¸² (¹Ý³³ÇÊ¿ä µµ¼­¸ñ·Ï¿¡¼­ ÇØ´çµµ¼­ ³»¿ë Ç¥½Ã x)
+í˜¹ì‹œ ëª°ë¼ì„œ ì˜¬ë¦¼ (ë°˜ë‚©í•„ìš” ë„ì„œëª©ë¡ì—ì„œ í•´ë‹¹ë„ì„œ ë‚´ìš© í‘œì‹œ x)
 select b.b_code,b_name,m.m_code,m_name,lend_date, if(datediff(current_date,lend_date)>2,'Y','N') is_delay
 from paymentIO i join memberInfo m on m.m_code = i.m_code
 join bookInfo b on b.b_code = i.b_code where return_date is null;
