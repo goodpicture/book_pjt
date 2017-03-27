@@ -11,3 +11,102 @@ select count(*) from bookInfo where b_code like
 
 -- 2. 도서중복코드[b_sub_code] 자동세팅
 select count(*) from bookinfo where b_code = ?; -- 를 b_sub_code 입력시에 자동으로 넣어준다
+
+{창을 켰을때 도서목록 출력}
+1. book프로그램을 띄우면 bookInfo(도서관리테이블)를 출력
+분류, 도서코드, 도서명, 저자, 출판사코드, 출판사명, 가격
+
+select b.b_code,b_sub_code,b_name,c_name,author,p.p_code,publisher,price
+from bookInfo b 
+join publisherInfo p on b.p_code = p.p_code 
+where is_del = false;
+
+
+{도서 입력시}
+해당분야가 없으면 coden(분야) 추가
+
+insert into coden (c_name, c_code) values
+(?,?);
+
+
+2.콤보박스에 해당출판사가 없는경우 출판사 추가
+출판사테이블(publisherInfo)에 모든 항목 입력 저장 (출판사코드, 출판사명, 담당자, 연락처, 우편번호, 주소)
+
+insert into publisherInfo (p_code, publisher, p_name, p_tel, p_zip_code, p_address)values
+(?,?,?,?,?,?);
+
+
+3.추가된 도서를 bookInfo(도서)에 입력하고 저장 (도서코드, 도서중복코드, 도서명, 저자, 출판사코드, 가격, 도서등록일, 도서폐기여부)
+
+insert into bookInfo(b_code, b_sub_code, b_name, author, p_code, price, insert_date, is_del)values
+(?,?,?,?,?,?,?,?);
+
+
+4. 트리거로 도서대여정보가 들어가야함(테이블데이터 넣기전에 입력)
+
+create trigger booklend_after_insert_bookinfo
+after insert 
+on bookInfo
+for each row 
+begin 
+insert into bookLend(b_code,b_sub_code,is_lending,b_lend_count) values(new.b_code, new.b_sub_code, false, 0);
+end;
+-----------------------------------
+(도서 정보 저장 시 bookLend(도서대여정보)에 대여여부 false, 총대여횟수는 0으로 초기화 설정)
+
+insert into bookLend(b_code,b_sub_code,is_lending,b_lend_count) values
+(?,?,?,?);
+
+
+5. bookInfo테이블과 publisherInfo join하여 출판사 정보 확인
+
+select b.b_code,b_sub_code,b_name,p.p_code,publisher,p_name,p_tel,p_zip_code,p_address
+from bookInfo b join publisherInfo p on b.p_code = p.p_code;
+
+
+{bookLend(도서대여정보) 출력}
+
+select b_code, b_sub_code, is_lending, b_lend_count from bookLend;
+
+
+6. 프로그램 도서목록에서 마우스오른쪽버튼으로 수정메뉴 클릭하여 업데이트
+
+UPDATE bookLend
+SET is_lending=?, b_lend_count=?
+WHERE b_code=? and b_sub_code=?;
+
+{반납시 연체 하였을 때 trigger}
+
+delimiter $$
+create trigger  book_project.paymentio_return_date_update_memberlend_delay_count
+after update
+on  book_project.paymentio
+for each row begin
+	if new.return_date is not null then
+		if datediff(new.return_date,old.lend_date)>2 then
+			update  book_project.memberlend set delay_count = (delay_count+1) where m_code=old.m_code;
+		end if;	
+	end if;
+end $$ 
+delimiter ;
+
+{폐기 도서} 
+1. 도서 폐기 기능
+
+update bookinfo
+set is_del = true
+where b_code = ? and b_sub_code = ?;
+
+select * from bookinfo where is_del = true;
+
+select * from bookinfo;
+
+2. 폐기된 도서만 보여주는 기능
+
+select b_code, b_sub_code, c_name, b_name, author, p_code, price, insert_date 
+from bookinfo where is_del=true;
+
+3. 폐기된 도서 다시 복원해주는 기능
+
+update bookinfo set is_del = false
+where b_code = ? and b_sub_code = ?;
