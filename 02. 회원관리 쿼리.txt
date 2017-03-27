@@ -1,0 +1,78 @@
+[회원관리]
+
+-- 회원 추가
+insert into book_project.memberinfo(m_code, m_name, m_tel, m_zip_code, m_address, m_pass, is_manager) values 
+(?,?,?,?,?,?,?);
+
+
+-- 회원 추가 트리거 : 회원 추가시, 회원대여정보에도 새로운 회원 추가 되어야 하는 트리거
+create trigger book_project.insert_memberinfo
+after insert on book_project.memberinfo
+for each row begin
+	insert into book_project.memberLend(m_code) values (new.m_code);
+end 
+
+-- 회원 정보 수정
+update book_project.memberinfo set m_name=?, m_tel=?, m_zip_code=?, m_address=?, m_pass=? where m_code=?;
+
+-- 회원 탈퇴(삭제)
+update book_project.memberinfo set is_secsn=true where m_code=?;
+
+-- 회원 탈퇴 복구 (탈퇴 취소)
+update book_project.memberinfo set is_secsn=false where m_code=?;
+
+-- 탈퇴한 회원목록 출력
+select m_code, m_name, m_tel, m_zip_code, m_address, m_pass, is_manager, is_secsn
+from memberinfo where is_secsn=true;
+
+-- 블랙리스트 추가한 프로시져
+delimiter $$
+create procedure book_project.proc_paymentIO_update(
+   in _b_code char(4),
+   in _b_sub_code char(4),
+   in _m_code char(4),
+   in _return_date date
+)
+begin   
+   declare _delay_count int ;
+   declare _m_now_count int ;
+    declare _lend_date date;
+
+   declare _black date;
+   declare err int default 0;
+   declare continue handler for sqlexception set err = -1;
+   
+   start transaction;
+  select lend_date into _lend_date from paymentio where b_code = _b_code  and b_sub_code = _b_sub_code and m_code= _m_code and return_date is null;
+
+   UPDATE paymentIO SET return_date = _return_date 
+   where b_code = _b_code and b_sub_code = _b_sub_code and m_code= _m_code and return_date is null;
+      
+   UPDATE booklend SET is_lending = false WHERE b_code= _b_code and b_sub_code = _b_sub_code;
+   update memberLend set m_now_count=(m_now_count-1) where m_code = _m_code;
+   
+   
+   if datediff(_return_date, _lend_date)>2 then 
+   	update memberlend set delay_count = (delay_count+1) where m_code=_m_code;
+   end if;
+
+   
+   select delay_count into _delay_count from memberlend where m_code=_m_code;   
+   select m_now_count into _m_now_count from memberlend where m_code=_m_code;   
+   if _delay_count > 2 then   	
+   		if _m_now_count = 0 then -- [연체횟수 ] 3권이상, 현재 대여 권수가 0      
+     	 select max(return_date) into _black from paymentio where m_code = _m_code;
+     	 update memberlend set black_date = date_add(_black , INTERVAL 30 DAY) where m_code=_m_code;
+ 	  end if; 
+   end if;   
+   
+   
+   
+   if err < 0 then
+      rollback;
+   else
+      commit;
+   end if;
+   
+end $$
+delimiter ;
