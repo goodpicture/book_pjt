@@ -1,20 +1,20 @@
--- ÃâÆÇ»ç ¼öÁ¤ / ÀÔ·Â / Ãâ·Â -------------
+-- ì¶œíŒì‚¬ ìˆ˜ì • / ì…ë ¥ / ì¶œë ¥ -------------
 
--- 0. ÃâÆÇ»ç µ¥ÀÌÅÍµé Ãâ·Â [ÃâÆÇ»çÄÚµå], [ÃâÆÇ»ç¸í], [´ã´çÀÚ¸í], [ÃâÆÇ»ç¹øÈ£], [¿ìÆí¹øÈ£], [ÁÖ¼Ò] Ãâ·Â
+-- 0. ì¶œíŒì‚¬ ë°ì´í„°ë“¤ ì¶œë ¥ [ì¶œíŒì‚¬ì½”ë“œ], [ì¶œíŒì‚¬ëª…], [ë‹´ë‹¹ìëª…], [ì¶œíŒì‚¬ë²ˆí˜¸], [ìš°í¸ë²ˆí˜¸], [ì£¼ì†Œ] ì¶œë ¥
 SELECT p_code, publisher, p_name, p_tel, p_zip_code, p_address FROM book_project.publisherinfo;
--- 1. ÀÔ·Â
--- 1-1. ÇöÁ¸ÇÏ´Â ÃâÆÇ»ç µ¥ÀÌÅÍ °³¼ö count
+-- 1. ì…ë ¥
+-- 1-1. í˜„ì¡´í•˜ëŠ” ì¶œíŒì‚¬ ë°ì´í„° ê°œìˆ˜ count
 select count(*) from book_project.publisherinfo; -- 23
--- java¿¡¼­ ¹İÈ¯µÈ µ¥ÀÌÅÍ °³¼ö +1 ÇÏ°í ÀÚ¸®¼ö Ã¤¿ì°í, ¾Õ¿¡  P ºÙ¿©¼­ 'P024' ÃâÆÇ»çÄÚµå ÀÚµ¿¼ÂÆÃ
--- 1-2. ÃâÆÇ»ç µ¥ÀÌÅÍ Ãß°¡
+-- javaì—ì„œ ë°˜í™˜ëœ ë°ì´í„° ê°œìˆ˜ +1 í•˜ê³  ìë¦¬ìˆ˜ ì±„ìš°ê³ , ì•ì—  P ë¶™ì—¬ì„œ 'P024' ì¶œíŒì‚¬ì½”ë“œ ìë™ì…‹íŒ…
+-- 1-2. ì¶œíŒì‚¬ ë°ì´í„° ì¶”ê°€
 INSERT INTO book_project.publisherinfo (p_code, publisher, p_name, p_tel, p_zip_code, p_address) 
-VALUES('P024', '³ª³ªÃâÆÇ»ç', '´ã´çÀÚ', '053-777-7777',12345, '´ë±¸±¤¿ª½Ã ¾îµğ¾îµğ¾îµğ');
--- 1-3. Ãß°¡ÈÄ Ãß°¡µÈ ÃâÆÇ»ç Æ÷ÇÔ µ¥ÀÌÅÍµé Ãâ·Â 
+VALUES(?, ?, ?, ?, ?, ?);
+-- 1-3. ì¶”ê°€í›„ ì¶”ê°€ëœ ì¶œíŒì‚¬ í¬í•¨ ë°ì´í„°ë“¤ ì¶œë ¥ 
 SELECT p_code, publisher, p_name, p_tel, p_zip_code, p_address FROM book_project.publisherinfo;
 
--- 2. ¼öÁ¤
+-- 2. ìˆ˜ì •
 UPDATE book_project.publisherinfo
-SET publisher='¼öÁ¤µÈ ÃâÆÇ»ç', p_name='¼öÁ¤µÈ ´ã´çÀÚ', p_tel='123-127', p_zip_code=12345, p_address=''
+SET publisher=?, p_name=?, p_tel=?, p_zip_code=?, p_address=?
 WHERE p_code='P024';
--- 2-1. ¼öÁ¤ÈÄ Ãß°¡µÈ ÃâÆÇ»ç Æ÷ÇÔ µ¥ÀÌÅÍµé Ãâ·Â 
+-- 2-1. ìˆ˜ì •í›„ ì¶”ê°€ëœ ì¶œíŒì‚¬ í¬í•¨ ë°ì´í„°ë“¤ ì¶œë ¥ 
 SELECT p_code, publisher, p_name, p_tel, p_zip_code, p_address FROM book_project.publisherinfo;
