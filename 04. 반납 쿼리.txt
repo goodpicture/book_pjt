@@ -1,19 +1,19 @@
 -- 1. 반납필요 도서목록 (고정)
 select b.b_code,b_name,m.m_code,m_name,lend_date, if(datediff(current_date,lend_date)>2,'Y','N') is_delay
 from paymentIO i join memberInfo m on m.m_code = i.m_code
-join bookInfo b on b.b_code = i.b_code where return_date is null;
+join bookInfo b on b.b_code = i.b_code and b.b_sub_code = i.b_sub_code where return_date is null;
  
 
 -- 2.반납필요 도서목록에서 누르면 그에 해당하는 데이터 정보 쫘아~~~~~
 select b.b_code,b_name,author,p.p_code,bl.b_lend_count,m.m_code,m.m_name,m.m_tel,lend_date,return_date
-from paymentIO i join bookInfo b on i.b_code=b.b_code join publisherInfo p on b.p_code=p.p_code
-join bookLend bl on b.b_code=bl.b_code join memberInfo m on i.m_code=m.m_code
+from paymentIO i join bookInfo b on i.b_code=b.b_code and b.b_sub_code = i.b_sub_code join publisherInfo p on b.p_code=p.p_code
+join bookLend bl on b.b_code=bl.b_code and b.b_sub_code = bl.b_sub_code join memberInfo m on i.m_code=m.m_code
 where i.b_code='H003' and m.m_code='M009';
 
 xml 커리
 select b.b_code,b_name,author,p.p_code,bl.b_lend_count,m.m_code,m.m_name,m.m_tel,lend_date,return_date
-from paymentIO i join bookInfo b on i.b_code=b.b_code join publisherInfo p on b.p_code=p.p_code
-join bookLend bl on b.b_code=bl.b_code join memberInfo m on i.m_code=m.m_code
+from paymentIO i join bookInfo b on i.b_code=b.b_code and b.b_sub_code = i.b_sub_code  join publisherInfo p on b.p_code=p.p_code
+join bookLend bl on b.b_code=bl.b_code and b.b_sub_code = bl.b_sub_code  join memberInfo m on i.m_code=m.m_code
 where i.b_code=? and m.m_code=?;
 
 트랜잭션----
@@ -70,4 +70,4 @@ end
 혹시 몰라서 올림 (반납필요 도서목록에서 해당도서 내용 표시 x)
 select b.b_code,b_name,m.m_code,m_name,lend_date, if(datediff(current_date,lend_date)>2,'Y','N') is_delay
 from paymentIO i join memberInfo m on m.m_code = i.m_code
-join bookInfo b on b.b_code = i.b_code where return_date is null;
+join bookInfo b on b.b_code = i.b_code and b.b_sub_code = i.b_sub_code where return_date is null;
