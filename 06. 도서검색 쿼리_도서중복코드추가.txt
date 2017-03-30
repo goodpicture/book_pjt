@@ -3,7 +3,7 @@
 -- 1.도서명으로 검색 : 도서코드, 도서중복코드, 도서명, 출판사, 저자, 가격 (도서정보) 출력
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b 
 left join publisherInfo p
-on b.p_code = p.p_code where b_name like '%자바%'
+on b.p_code = p.p_code and b.b_sub_code = p.b_sub_code where b_name like '%자바%'
 
 -- 2. 도서명으로 검색 시, 책의 이름이 중복 될 경우
 -- 2-1. 중복확인하기 : 동일한 책의 이름이 있는지, 몇 권인지 확인
@@ -11,29 +11,29 @@ select count(*) from bookInfo where b_name like '%런던%'
 
 -- 2-2. 동일한 책 이름이 중복되어 나오면, 새창에서 클릭시, 도서 코드로 재 검색  ** 최종적으로 중복코드도 지정해서 한권만 선택하기 
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b left join publisherInfo p
-on b.p_code = p.p_code where b_code = ? and b_sub_code= ?;
+on b.p_code = p.p_code and b.b_sub_code = p.b_sub_code where b_code = ? and b_sub_code= ?;
 
 
 -- 3. 도서코드로 검색 : 도서코드, 도서명, 출판사, 저자, 가격 (도서정보) 출력
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b left join publisherInfo p
-on b.p_code = p.p_code where b_code = ?;
+on b.p_code = p.p_code and b.b_sub_code = p.b_sub_code where b_code = ?;
 
 -- 3-1. ** 최종적으로 중복코드도 지정해서 한권만 선택하기 
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b left join publisherInfo p
-on b.p_code = p.p_code where b_code = ? and b_sub_code= ?;
+on b.p_code = p.p_code and b.b_sub_code = p.b_sub_code where b_code = ? and b_sub_code= ?;
 
 
 
 -- 4. 출판사명으로 도서 검색
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b left join publisherInfo p
-on b.p_code = p.p_code where publisher like '%한빛%';
+on b.p_code = p.p_code and b.b_sub_code = p.b_sub_code where publisher like '%한빛%';
 
 -- 4-1. 동일한 출판사명이 있을 경우, 중복확인
 select count(*) from publisherInfo where publisher like '%한빛%';
 
 -- 4-2. 중복확인 되어 새창에서 클릭시, 도서코드로 재 검색 최종 1권 선택
 select b_code, b_sub_code, b_name, p.publisher, author, price from bookInfo b left join publisherInfo p
-on b.p_code = p.p_code where b_code = ? and b_sub_code= ?;
+on b.p_code = p.p_code and b.b_sub_code = p.b_sub_code where b_code = ? and b_sub_code= ?;
 
 
 
@@ -52,13 +52,13 @@ select count(*) from bookinfo where b_name like '%자바%'; -- 가 만약 1이�
 select m.m_code, m.m_name, lend_date, return_date, if(datediff(current_date, lend_date)>2, 'Y', 'N')
 from paymentIO p 
 join memberInfo m on p.m_code = m.m_code
-join bookInfo b on b.b_code = p.b_code where b.b_sub_code = 0 and b.b_name like '%자바%';
+join bookInfo b on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code where b.b_sub_code = 0 and b.b_name like '%자바%';
 
 6-1. 동일한 책 이름이 중복되어 나오면, 새창에서 클릭시, 도서 코드로 재 검색
 select m.m_code, m.m_name, lend_date, return_date, if(datediff(current_date, lend_date)>2, 'Y', 'N')
 from paymentIO p 
 join memberInfo m on p.m_code = m.m_code
-join bookInfo b on b.b_code = p.b_code where b.b_code= ? and b.b_sub_code = ? ;
+join bookInfo b on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code where b.b_code= ? and b.b_sub_code = ? ;
 
 
 7. 총 대여 횟수
