@@ -33,7 +33,7 @@ CREATE TABLE memberInfo (
 	m_tel      CHAR(13)    NULL,     -- 연락처
 	m_zip_code INTEGER(5)  NULL,     -- 우편번호
 	m_address  VARCHAR(50) NULL,     -- 주소
-	is_manager BOOLEAN     NULL,     -- 관리자모드
+	m_group    CHAR(1)      NULL,     -- 
 	is_secsn   BOOLEAN     NULL     DEFAULT false -- 탈퇴여부
 );
 
