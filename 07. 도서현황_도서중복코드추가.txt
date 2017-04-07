@@ -14,8 +14,7 @@ where return_date is null;
 -- 2. 분야별 보유 권수 : [분류],[권수] 출력
 select c_name, count(*) from bookinfo group by c_name; 
 -- 2-1. 보유 총 권수 -- 20
-select count(*) from bookinfo; 
-
+select count(*) from bookinfo; 원형그래프
 
 -- 3. 순위 뽑기
 
