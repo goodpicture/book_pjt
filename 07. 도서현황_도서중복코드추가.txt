@@ -14,7 +14,7 @@ where return_date is null;
 -- 2. 분야별 보유 권수 : [분류],[권수] 출력
 select c_name, count(*) from bookinfo group by c_name; 
 -- 2-1. 보유 총 권수 -- 20
-select count(*) from bookinfo;
+select count(*) from bookinfo; 
 
 
 -- 3. 순위 뽑기
@@ -25,7 +25,6 @@ select count(*) cnt, c_name, p.b_code, b_name, b.author, min(insert_Date) in_dat
 inner join bookinfo b on b.b_code = p.b_code and b.b_sub_code = p.b_sub_code 
 group by p.b_code order by cnt desc, in_date desc
 limit 0, 3; 
-
 
 -- 2. 월별 베스트 1~3위
 select count(*) cnt, c_name, p.b_code, b_name, b.author, min(insert_Date) in_date from paymentio p
