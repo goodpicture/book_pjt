@@ -1,0 +1,51 @@
+-- <<대여관리>>
+
+-- 1. 대여가능 목록에 출력할 정보 [도서코드],[도서명],[저자],[출판사],[가격],[총대여횟수]
+SELECT b.b_code, b_name, author, p.publisher, price, l.b_lend_count FROM book_project.book_info b 
+inner join book_project.publisher_info p on b.p_code = p.p_code 
+inner join book_project.b_lend_info l on b.b_code = l.b_code 
+where l.is_lending = false;
+
+
+-- 2. 대여가능목록에서 도서 선택시 입력창에 정보 뿌리기
+-- 2-1. 왼쪽 도서정보 뿌림 [도서코드],[도서명],[저자],[출판사],[가격],[총대여횟수]
+SELECT b.b_code, b_name, author, p.publisher, price, bl.b_lend_count FROM book_project.book_info b 
+inner join book_project.publisher_info p on b.p_code = p.p_code 
+inner join book_project.b_lend_info bl on b.b_code = bl.b_code 
+where b.b_code= 'J001';
+
+-- 2-2. 오른쪽에서 회원 검색 
+-- 2-2-1. 대여 가능한 회원인가? -- 대여불가시 창을 띄워서 정보 띄우지 않음
+select is_posbl from book_project.m_lend_info ml where m_code = 'M009'; -- 1/0 반환
+
+-- 2-2-1-1. 대여불가 회원이라면 블랙리스트 해당인지 검색
+select black_date from book_project.m_lend_info ml where m_code = 'M010'; -- 블랙 아닐시 null 블랙일시 date 형식 반환
+--        --블랙이라면 ( 해당시 대여 금지마지막일 출력)(~~까지 대여불가)메세지 jLabel로 출력해줄 것;
+-- 2-2-1-2. 대여가능회원이라면  [회원코드], [성명],[전화번호] 출력;
+select m_code, m_name, tel from book_project.member_info where m_code = 'M009';
+
+-- 3. 대여버튼
+-- 3-1. <<회원대여정보>>테이블에서 [총대여권수] +1, <<도서대여정보>>테이블에서 [총대여횟수] +1
+UPDATE book_project.b_lend_info SET b_lend_count=(b_lend_count+1) WHERE b_code= ?; -- 4
+UPDATE book_project.m_lend_info SET m_lend_count=(m_lend_count+1) WHERE m_code= ?;
+select b_lend_count, b_lend_count*2 from book_project.b_lend_info where b_code = 'T001'; -- 3 / 업데이트 제대로 되었는지 확인한 거
+
+-- 3-2. <<출납>>테이블 [회원코드],[도서코드],[대여일자(컴퓨터 현재일자): CURRENT_DATE()? now()?],[반납일자(초기화 : null)]
+INSERT INTO book_project.payment_io (b_code, m_code, lend_date, return_date) values (_b_code,_m_code, CURRENT_DATE(), null);
+INSERT INTO book_project.payment_io (b_code, m_code, lend_date, return_date) values ('T001','M001', CURRENT_DATE(), null);
+
+
+-- 3-3. <<도서대여정보>>테이블에서 [대여여부] true 설정
+UPDATE book_project.b_lend_info SET is_lending=true WHERE b_code='J001';
+
+-- 3-4. [도서 대여 가능 목록]에 자료 출력 : 1번 다시 실행
+SELECT b.b_code, b_name, author, p.publisher, price, l.b_lend_count FROM book_project.book_info b 
+inner join book_project.publisher_info p on b.p_code = p.p_code 
+inner join book_project.b_lend_info l on b.b_code = l.b_code 
+where l.is_lending = false;
+
+
+--------------------------------------------------------------
+
+
+
